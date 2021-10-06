@@ -1,16 +1,13 @@
-import defaultExport from './variables.js'
-import fetch from "node-fetch"
+import varObj from './variables.js'
 
 export default (async () => {
-    const client = new variables.tmi.Client(options);
+    // NEED .env VARIABLES WITH TOKEN FOR TWITCH APP
+    const client = new varObj.tmi.Client(varObj.twitchOp);
     client.connect().catch(console.error);
 
     client.on('message', (channel, tags, message, self) => {
-        if(variables.emoteArray.includes(message.toLowerCase())) {
+        if(varObj.emoteArray.includes(message.toLowerCase())) {
             console.log("Got it")
-            emoteCounter[message.toLowerCase()]++
-            fetch('/tally', postOptions)
-            console.log("Tallied")
         }
     });
 })();

@@ -1,6 +1,16 @@
 html {
     font-family: 'Noto Sans Display', sans-serif;
+    font-size: 18px;
     color: white;
+}
+
+body {
+    background-color: gray;
+}
+
+h1 {
+    font-weight: 400;
+    text-align: center;
 }
 
 button {
@@ -9,37 +19,4 @@ button {
     height: 3em;
     margin: 1.5em auto;
     width: 15%;
-}
-
-body {
-    background-color: gray;
-}
-
-table {
-    border-collapse: separate;
-    border-spacing: 0px;
-    margin: auto;
-    min-width: 500px;
-    width: 30%;
-}
-
-th {
-    border: white solid 5px;
-    font-size: 1.3em;
-    font-weight: 400;
-    margin: 0px;
-    padding: 1em 0em;
-    text-align: center;
-}
-
-td {
-    border: white solid 5px;
-    font-size: 1.2em;
-    font-weight: 100;
-    margin: 0px;
-    padding: 1.5em 1.5em;
-}
-
-.right {
-    text-align: center;
 }

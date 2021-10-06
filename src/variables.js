@@ -1,12 +1,15 @@
-const tmi = import('tmi.js')
-const express = import('express')
-const puppeteer = import('puppeteer')
+import dotenv from 'dotenv'
+dotenv.config();
 
+import express from 'express'
+import tmi from 'tmi.js'
 
-const object = {
+// import puppeteer from 'puppeteer';
+
+const varObj = {
 	tmi: tmi,
 	express: express,
-	puppeteer: puppeteer,
+	// puppeteer: puppeteer,
 	
 	emoteArray: ['catjam', 'ez', 'hackermans'],
 
@@ -16,7 +19,7 @@ const object = {
         hackermans: 0,
     },
 
-	options: {
+	twitchOp: {
 		options: { debug: true, messagesLogLevel: "info" },
 		connection: {
 			reconnect: true,
@@ -37,4 +40,4 @@ const object = {
 	},
 }
 
-export default object;
+export default varObj;
