@@ -1,5 +1,5 @@
 <template>
-  <h2>{{ emoteCount }}</h2>
+  <h1>{{ emoteTotal }}</h1>
 </template>
 
 <script>
@@ -7,7 +7,7 @@ export default {
   name: "EmoteTotal",
 
   props: {
-    emoteCount: Number,
+    emoteTotal: Number,
   },
 };
 </script>
