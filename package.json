@@ -1,20 +1,40 @@
 {
   "name": "glorious-burrito-emote-counter",
   "version": "1.0.0",
+  "private": true,
   "description": "A bot that counts specific words and Twitch emotes.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+    "name": "Connor McDonald"
   },
-  "author": "Connor McDonald",
-  "license": "ISC",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "twitch": "node src/twitch-listen.js"
+  },
+  "main": "index.js",
   "dependencies": {
+    "core-js": "^3.6.5",
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "node-fetch": "^3.0.0",
     "puppeteer": "^10.4.0",
-    "tmi.js": "^1.8.5"
+    "tmi.js": "^1.8.5",
+    "vue": "^2.6.11",
+    "ws": "^8.2.3"
   },
-  "type": "module"
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "_id": "glorious-burrito-emote-counter@1.0.0",
+  "license": "ISC",
+  "readme": "ERROR: No README data found!"
 }
