@@ -1,6 +1,7 @@
 <template>
   <div>
     <EmoteTotal :emoteTotal="emoteTotal" />
+    <Users :allUsers="allUsers" />
     <br />
     <ResetButton @resetTotal="resetTotal" />
   </div>
@@ -8,6 +9,7 @@
 
 <script>
 import EmoteTotal from "./components/EmoteTotal.vue"
+import Users from "./components/Users.vue"
 import ResetButton from "./components/ResetButton.vue";
 
 import tmi from "tmi.js";
@@ -19,12 +21,14 @@ export default {
 
   components: {
     EmoteTotal,
+    Users,
     ResetButton,
   },
 
   data() {
     return {
       emoteTotal: 0,
+      allUsers: {},
     }
   },
 
@@ -49,6 +53,18 @@ export default {
       });
     },
 
+    async getUserList() {
+      const res = await fetch('https://tmi.twitch.tv/group/user/conglerbigmac/chatters', {
+        method: "GET",
+        header: {
+          'Authorization': 'Bearer jfbm43l1kmbpfp2ac1g9hp5ha8ggkl',
+          'ClientId': 'hqka95ou763uvr0cabtm9lcnsaoxtc'
+        }
+      }).then(data => data.json()).then(json => {return json})
+
+      return res
+    },
+
     thresholdReached() {
       if((this.emoteTotal % 5) === 0) {
         console.log("We hit the threshold!!")
@@ -63,6 +79,7 @@ export default {
   async created() {
     this.emoteTotal = 0;
     await this.emoteListener();
+    this.allUsers = this.getUserList();
   },
 
   updated() {
