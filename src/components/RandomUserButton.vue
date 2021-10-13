@@ -1,10 +1,10 @@
 <template>
-  <button @click="$emit('resetTotal')">Quick Reset</button>
+  <button @click="$emit('randomUserButton')">Get New Random User</button>
 </template>
 
 <script>
 export default {
-  name: "ResetButton",
+  name: "RandomUserButton",
 };
 </script>
 

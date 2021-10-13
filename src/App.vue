@@ -1,15 +1,17 @@
 <template>
   <div>
     <EmoteTotal :emoteTotal="emoteTotal" />
-    <Users :allUsers="allUsers" />
+    <EmotingUsers :emotingUsers="emotingUsers" />
     <br />
+    <RandomUserButton @randomUserButton="randomUserButton" />
     <ResetButton @resetTotal="resetTotal" />
   </div>
 </template>
 
 <script>
 import EmoteTotal from "./components/EmoteTotal.vue"
-import Users from "./components/Users.vue"
+import EmotingUsers from "./components/EmotingUsers.vue"
+import RandomUserButton from "./components/RandomUserButton.vue"
 import ResetButton from "./components/ResetButton.vue";
 
 import tmi from "tmi.js";
@@ -21,14 +23,16 @@ export default {
 
   components: {
     EmoteTotal,
-    Users,
+    EmotingUsers,
+    RandomUserButton,
     ResetButton,
   },
 
   data() {
     return {
       emoteTotal: 0,
-      allUsers: {},
+      emotingUsers: [],
+      randomUser: ""
     }
   },
 
@@ -46,40 +50,49 @@ export default {
 
       client.connect();
 
-      client.on("message", (channel, tags, message) => {
-        if (message.toLowerCase() === "hackermans") {
+      client.on("message", (tags, message) => {
+        if (message.toLowerCase() === "pogchamp") {
+          // Totals
           this.emoteTotal += 1;
+
+          // Per user
+          const username = tags.username.toString();
+          const alreadyEmoted = this.emotingUsers.find(user => user.name === username)
+          if (!alreadyEmoted) {
+            const newUser = {
+              "name": username,
+              "count": 1,
+            }
+
+            this.emotingUsers.push(newUser)
+          } else {
+            this.emotingUsers.find(user => user.name === username).count += 1;
+          }
         }
       });
     },
 
-    async getUserList() {
-      const res = await fetch('https://tmi.twitch.tv/group/user/conglerbigmac/chatters', {
-        method: "GET",
-        header: {
-          'Authorization': 'Bearer jfbm43l1kmbpfp2ac1g9hp5ha8ggkl',
-          'ClientId': 'hqka95ou763uvr0cabtm9lcnsaoxtc'
-        }
-      }).then(data => data.json()).then(json => {return json})
-
-      return res
+    thresholdReached() {
+      if (this.emoteTotal % 5 === 0 && this.emoteTotal !== 0) {
+        console.log("We hit the threshold!!")
+        console.log("The random user is... " + this.emotingUsers[Math.floor(Math.random() * this.emotingUsers.length)].name)
+      }
     },
 
-    thresholdReached() {
-      if((this.emoteTotal % 5) === 0) {
-        console.log("We hit the threshold!!")
-      }
+    randomUserButton() {
+      console.log("The random user is... " + this.emotingUsers[Math.floor(Math.random() * this.emotingUsers.length)].name)
     },
 
     resetTotal() {
       this.emoteTotal = 0;
+      this.emotingUsers = [];
     },
   },
 
   async created() {
     this.emoteTotal = 0;
+    this.emotingUsers = [];
     await this.emoteListener();
-    this.allUsers = this.getUserList();
   },
 
   updated() {
