@@ -1,108 +1,168 @@
 <template>
-  <div>
+  <div class="container">
+    <EmoteThreshold
+      @update-threshold="updateThreshold"
+      :emoteThreshold="emoteThreshold"
+    />
     <EmoteTotal :emoteTotal="emoteTotal" />
+    <!--     <h1>{{ usersInChat }}</h1> -->
     <EmotingUsers :emotingUsers="emotingUsers" />
-    <br />
-    <RandomUserButton @randomUserButton="randomUserButton" />
-    <ResetButton @resetTotal="resetTotal" />
+    <div class="buttonContainer">
+      <ResetTotal @resetting-total="resetTotal" />
+      <GetRandomUser @choosing-random-user="getRandomUser" />
+    </div>
   </div>
 </template>
 
 <script>
-import EmoteTotal from "./components/EmoteTotal.vue"
-import EmotingUsers from "./components/EmotingUsers.vue"
-import RandomUserButton from "./components/RandomUserButton.vue"
-import ResetButton from "./components/ResetButton.vue";
+// for fetching https://tmi.twitch.tv/group/user/conglerbigmac/chatters
+
+import EmoteThreshold from "./components/EmoteThreshold.vue";
+import EmoteTotal from "./components/EmoteTotal.vue";
+import EmotingUsers from "./components/EmotingUsers.vue";
+import ResetTotal from "./components/ResetTotal.vue";
+import GetRandomUser from "./components/GetRandomUser.vue";
 
 import tmi from "tmi.js";
-import dotenv from "dotenv";
-dotenv.config();
+
+class newEmotingUser {
+  constructor(displayName, userEmoteCount) {
+    this.displayName = displayName;
+    this.userEmoteCount = userEmoteCount;
+  }
+}
 
 export default {
   name: "App",
 
   components: {
+    EmoteThreshold,
     EmoteTotal,
     EmotingUsers,
-    RandomUserButton,
-    ResetButton,
+    ResetTotal,
+    GetRandomUser,
   },
 
   data() {
     return {
+      emoteThreshold: 10,
       emoteTotal: 0,
+      usersInChat: [],
       emotingUsers: [],
-      randomUser: ""
-    }
+      randomUser: "",
+    };
   },
 
   methods: {
-    async emoteListener() {
+    async twitchListen() {
       const client = new tmi.Client({
         options: { debug: true },
         identity: {
           username: "burritocounter",
-          password: "ruz600pwelf8xkbrnnekdb8wuzpb0a",
-          // Don't forget to remove later
+          password: "oauth:ruz600pwelf8xkbrnnekdb8wuzpb0a",
         },
         channels: ["#conglerbigmac"],
       });
 
-      client.connect();
+      await client.connect();
 
-      client.on("message", (tags, message) => {
-        if (message.toLowerCase() === "pogchamp") {
-          // Totals
+      client.on("join", (channel, username, self) => {
+        if (self) return;
+        if (this.usersInChat.includes(username)) {
+          return;
+        }
+        this.usersInChat.push(username);
+      });
+
+      client.on("message", (channel, tags, message, self) => {
+        if (self) return;
+
+        if (message.toLowerCase().includes("pogchamp")) {
           this.emoteTotal += 1;
 
-          // Per user
-          const username = tags.username.toString();
-          const alreadyEmoted = this.emotingUsers.find(user => user.name === username)
-          if (!alreadyEmoted) {
-            const newUser = {
-              "name": username,
-              "count": 1,
-            }
-
-            this.emotingUsers.push(newUser)
+          if (
+            this.emotingUsers.find(
+              (user) => user.displayName === tags.username
+            ) === undefined
+          ) {
+            let emotingUser = new newEmotingUser(tags.username, 1);
+            this.emotingUsers.push(emotingUser);
           } else {
-            this.emotingUsers.find(user => user.name === username).count += 1;
+            this.emotingUsers.find(
+              (user) => user.displayName === tags.username
+            ).userEmoteCount += 1;
           }
         }
       });
+
+      client.on("part", (channel, username, self) => {
+        if (self) return;
+        if (
+          this.emotingUsers.find((user) => user.displayName === username) !==
+          undefined
+        ) {
+          this.emotingUsers.splice(
+            this.emotingUsers.findIndex(
+              (user) => user.displayName === username
+            ),
+            1
+          );
+        }
+        this.usersInChat.splice(this.usersInChat.indexOf(username), 1);
+      });
     },
 
-    thresholdReached() {
-      if (this.emoteTotal % 5 === 0 && this.emoteTotal !== 0) {
-        console.log("We hit the threshold!!")
-        console.log("The random user is... " + this.emotingUsers[Math.floor(Math.random() * this.emotingUsers.length)].name)
+    updateThreshold(emoteThreshold) {
+      this.emoteThreshold = emoteThreshold;
+    },
+
+    checkForEmoteThreshold() {
+      if (
+        this.emoteTotal % this.emoteThreshold === 0 &&
+        this.emoteTotal !== 0
+      ) {
+        this.randomUser =
+          this.emotingUsers[
+            Math.floor(Math.random() * this.emotingUsers.length)
+          ].displayName;
+        window.alert(
+          `Threshold reached! The lucky winner is... ${this.randomUser}!`
+        );
       }
     },
 
-    randomUserButton() {
-      console.log("The random user is... " + this.emotingUsers[Math.floor(Math.random() * this.emotingUsers.length)].name)
+    resetTotal() {
+      if (confirm("Are you sure you want to reset the emote total?")) {
+        this.emoteTotal = 0;
+        this.emotingUsers = [];
+        this.randomUser = "";
+      }
     },
 
-    resetTotal() {
-      this.emoteTotal = 0;
-      this.emotingUsers = [];
+    getRandomUser() {
+      if (this.emotingUsers.length === 0) {
+        window.alert(`It doesn't look like anyone's used the emote yet.`);
+      } else {
+        this.randomUser =
+          this.emotingUsers[
+            Math.floor(Math.random() * this.emotingUsers.length)
+          ].displayName;
+        window.alert(`The lucky winner is... ${this.randomUser}!`);
+      }
     },
   },
 
-  async created() {
-    this.emoteTotal = 0;
-    this.emotingUsers = [];
-    await this.emoteListener();
+  created() {
+    this.twitchListen();
   },
 
   updated() {
-    this.thresholdReached();
-  }
+    this.checkForEmoteThreshold();
+  },
 };
 </script>
 
 <style>
-* {
-  text-align: center;
-}
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+@import "../public/styles.css";
 </style>

@@ -1,21 +1,22 @@
 <template>
-	<div>
-		<div v-for="user in emotingsUsers" :key="user.name">
-			<h2>{{ user.name }} {{ user.count }}</h2>
-		</div>
-	</div>
+  <div class="emotingUsers">
+    <h2>Emoting users:</h2>
+    <div class="userRow" :key="user.displayName" v-for="user in emotingUsers">
+      <h3>
+        {{ user.displayName }}
+      </h3>
+      <h3>
+        {{ user.userEmoteCount }}
+      </h3>
+    </div>
+  </div>
 </template>
 
 <script>
-	export default {
-		name: "EmotingUsers",
-
-		props: {
-			emotingUsers: Array,
-		}
-	}
+export default {
+  name: 'EmotingUsers',
+  props: {
+    emotingUsers: Array,
+  },
+};
 </script>
-
-<style scope>
-
-</style>

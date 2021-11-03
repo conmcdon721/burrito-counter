@@ -1,0 +1,5 @@
+GET https://id.twitch.tv/oauth2/authorize?client_id=hqka95ou763uvr0cabtm9lcnsaoxtc&redirect_uri=http://localhost&response_type=token&scope=channel_subscriptions+user_read+channel:moderate+chat:edit+chat:read
+
+token ruz600pwelf8xkbrnnekdb8wuzpb0a
+
+http://localhost/#access_token=ruz600pwelf8xkbrnnekdb8wuzpb0a&scope=channel_subscriptions+user_read+channel%3Amoderate+chat%3Aedit+chat%3Aread&token_type=bearer
