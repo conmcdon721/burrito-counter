@@ -5,7 +5,7 @@
       :emoteThreshold="emoteThreshold"
     />
     <EmoteTotal :emoteTotal="emoteTotal" />
-    <!--     <h1>{{ usersInChat }}</h1> -->
+    <!-- <h1>{{ usersInChat }}</h1> -->
     <EmotingUsers :emotingUsers="emotingUsers" />
     <div class="buttonContainer">
       <ResetTotal @resetting-total="resetTotal" />
@@ -15,8 +15,6 @@
 </template>
 
 <script>
-// for fetching https://tmi.twitch.tv/group/user/conglerbigmac/chatters
-
 import EmoteThreshold from "./components/EmoteThreshold.vue";
 import EmoteTotal from "./components/EmoteTotal.vue";
 import EmotingUsers from "./components/EmotingUsers.vue";
@@ -29,6 +27,13 @@ class newEmotingUser {
   constructor(displayName, userEmoteCount) {
     this.displayName = displayName;
     this.userEmoteCount = userEmoteCount;
+  }
+}
+
+class potentialSpammer {
+  constructor(displayName, spamCount) {
+    this.displayName = displayName;
+    this.spamCount = spamCount;
   }
 }
 
@@ -49,6 +54,7 @@ export default {
       emoteTotal: 0,
       usersInChat: [],
       emotingUsers: [],
+      spamWatch: [],
       randomUser: "",
     };
   },
@@ -59,7 +65,7 @@ export default {
         options: { debug: true },
         identity: {
           username: "burritocounter",
-          password: "oauth:ruz600pwelf8xkbrnnekdb8wuzpb0a",
+          password: "oauth:ee3tp06d3ocuiudo56svve4nq7j7js",
         },
         channels: ["#conglerbigmac"],
       });
@@ -91,6 +97,51 @@ export default {
             this.emotingUsers.find(
               (user) => user.displayName === tags.username
             ).userEmoteCount += 1;
+          }
+
+          if (
+            this.spamWatch.find(
+              (user) => user.displayName === tags.username
+            ) === undefined
+          ) {
+            let spammingUser = new potentialSpammer(tags.username, 1);
+            this.spamWatch.push(spammingUser);
+            setTimeout(() => {
+              this.spamWatch.splice(
+                this.spamWatch.indexOf(
+                  this.spamWatch.find(
+                    (user) => user.displayName === tags.username
+                  )
+                ),
+                1
+              );
+            }, 15000);
+          } else {
+            this.spamWatch.find(
+              (user) => user.displayName === tags.username
+            ).spamCount += 1;
+            if (
+              this.spamWatch.find((user) => user.displayName === tags.username)
+                .spamCount > 5
+            ) {
+              client
+                .timeout(
+                  channel,
+                  tags.username,
+                  60,
+                  "Too many emotes too quickly."
+                )
+                .then(() => {
+                  console.log("Successfully timed out");
+                  client.say(
+                    channel,
+                    `Hey @${tags.username}! You've been sending a lot of PogChamps. I appreciate it, but please slow down just a little bit (no more than 5 in 15 seconds).`
+                  );
+                })
+                .catch((err) => {
+                  console.log(`Unsuccessfully timed out. The error was ${err}`);
+                });
+            }
           }
         }
       });
