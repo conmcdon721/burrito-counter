@@ -2,7 +2,7 @@
   "name": "glorious-burrito-emote-counter",
   "version": "1.0.0",
   "private": true,
-  "description": "A bot that counts specific words and Twitch emotes.",
+  "description": "A bot that keeps count of Twitch emotes used in Twitch chat.",
   "author": {
     "name": "Connor McDonald"
   },
@@ -10,10 +10,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps",
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "twitch": "node src/twitch-listen.js"
   },
-  "main": "index.js",
+  "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
     "dotenv": "^10.0.0",
@@ -30,11 +35,17 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
+    "electron": "^15.3.0",
+    "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "vue-cli-plugin-electron-builder": "~2.1.1",
     "vue-template-compiler": "^2.6.11"
   },
   "_id": "glorious-burrito-emote-counter@1.0.0",
   "license": "ISC",
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "win": {
+    "icon": "./public/favicon.ico"
+  }
 }

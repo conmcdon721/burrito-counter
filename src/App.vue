@@ -22,6 +22,8 @@ import ResetTotal from "./components/ResetTotal.vue";
 import GetRandomUser from "./components/GetRandomUser.vue";
 
 import tmi from "tmi.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 class newEmotingUser {
   constructor(displayName, userEmoteCount) {

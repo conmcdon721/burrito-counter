@@ -1,92 +1,98 @@
-/* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-
 .container {
-    border: lightgray solid 10px;
-    border-radius: 25px;
-    display: flex;
-    font-family: 'Ubuntu', sans-serif;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 85vh;
-    margin: 3em auto 25px;
-    min-width: 300px;
-    text-align: center;
-    width: 70%;
+  border: lightgray solid 10px;
+  border-radius: 25px;
+  display: flex;
+  font-family: "Ubuntu", sans-serif;
+  flex-direction: column;
+  height: 85vh;
+  margin: 3em auto 25px;
+  min-width: 300px;
+  text-align: center;
+  width: 70%;
 }
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------ */
+.emoteThreshold input[type="number"] {
+  font-family: "Ubuntu", sans-serif;
+  width: 5em;
+}
+
+.emoteThreshold input[type="submit"] {
+  font-family: "Ubuntu", sans-serif;
+  margin: auto 0.5em;
+}
 
 .emoteTotal h2 {
-    margin-bottom: 10px;
-    margin-top: 40px;
+  margin-bottom: 10px;
+  margin-top: 30px;
 }
 
 .emoteTotal h1 {
-    margin: 5px auto 15px;
-    font-size: 48pt;
+  margin: 5px auto 15px;
+  font-size: 48pt;
 }
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-
 .emotingUsers {
-    flex-grow: 1;
-    height: 50%;
-    margin: 0 auto 0;
-    overflow: auto;
-    width: 70%;
+  flex-grow: 1;
+  height: 50%;
+  margin: 0 auto 0;
+  overflow: auto;
+  width: 70%;
 }
 
 .emotingUsers h2 {
-    border-bottom: lightgrey solid 2px;
-    padding-bottom: 10px;
+  border-bottom: lightgrey solid 2px;
+  padding-bottom: 10px;
 }
 
 .userRow {
-    display: flex;
-    justify-content: space-between;
-    height: 30px;
-    align-items: center;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-
 .buttonContainer {
-    margin: 25px auto 25px;
-    width: 65%;
-    }
+  margin: 25px auto 25px;
+  width: 65%;
+}
 
 .buttonContainer button {
-    border: none;
-    border-radius: 5px;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 1.17em;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1.17em;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  width: 100%;
 }
 
 .buttonContainer button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .resetButton button {
-    background-color: RGBA(206, 32, 41, 0.8);
-    color: white;
+  background-color: RGBA(206, 32, 41, 0.8);
+  color: white;
 }
 
 .resetButton button:hover {
-    color: #000;
+  color: #000;
 }
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------ */
-
 .randomUserButton button {
-    background-color: lightgray;
-    color: black;
+  background-color: lightgray;
+  color: black;
 }
 
 .randomUserButton button:hover {
-    color: #fff;
+  color: #fff;
+}
+
+@media screen and (max-width: 520px) {
+  .emoteThreshold label {
+    display: block;
+    margin-bottom: 1em;
+  }
 }

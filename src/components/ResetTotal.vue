@@ -1,15 +1,15 @@
 <template>
   <div class="resetButton">
-    <button @click="resetTotal">Reset total emote count</button>
+    <button @click="resetTotal">Reset emote count</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ResetTotal',
+  name: "ResetTotal",
   methods: {
     resetTotal() {
-      this.$emit('resetting-total');
+      this.$emit("resetting-total");
     },
   },
 };
