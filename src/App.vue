@@ -66,10 +66,10 @@ export default {
       const client = new tmi.Client({
         options: { debug: true },
         identity: {
-          username: "burritocounter",
-          password: "oauth:ee3tp06d3ocuiudo56svve4nq7j7js",
+          username: process.env.USERNAME,
+          password: process.env.OAUTH,
         },
-        channels: ["#conglerbigmac"],
+        channels: ["gloriousburrito"],
       });
 
       await client.connect();
@@ -130,7 +130,7 @@ export default {
                 .timeout(
                   channel,
                   tags.username,
-                  60,
+                  5,
                   "Too many emotes too quickly."
                 )
                 .then(() => {
@@ -206,6 +206,7 @@ export default {
   },
 
   created() {
+    console.log(process.env);
     this.twitchListen();
   },
 
