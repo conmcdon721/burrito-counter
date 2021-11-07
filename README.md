@@ -2,17 +2,26 @@
 
 ## Install
 ### Windows Explorer
-1. Navigate to root file. ![](`public/glorious-burrito-emote-counter`)
+1. Navigate to root file.
 2. Open `dist_electron` folder.
-/public/install_instructions1.png
+
+![](public/install_instructions1.png)
+
 3. Run `Gloriousburrito Emote Counter Setup 1.0.0.exe`.
-/public/install_instructions2.png
+
+![](public/install_instructions2.png)
+
 4. Open `win-unpacked` folder.
-/public/install_instructions3.png
+
+![](public/install_instructions3.png)
+
 5. Run `Gloriousburrito Emote Counter.exe`.
-/public/install_instructions4.png
+
+![](public/install_instructions4.png)
+
 6. (Recommended) Create shortcut to `Gloriousburrito Emote Counter.exe`.
-/public/install_instructions5.png
+
+![](public/install_instructions5.png)
 
 ## Features
 - Twitch chat emote count
